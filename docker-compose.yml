@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  sample-app:
+    image: sample-app:latest    # The image you will build
+    container_name: sample-app-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4001:4001"
+    environment:
+      SPRING_REDIS_HOST: "140.245.21.3"
+      SPRING_REDIS_PORT: "6379"
+      SPRING_REDIS_PASSWORD: "Demo@123"
+      SERVER_PORT: "4001"
+    restart: always
