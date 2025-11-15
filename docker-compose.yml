@@ -1,30 +1,21 @@
-version: "3.8"
-
+version: '3.8'
 services:
+
   redis:
     image: redis:latest
-    container_name: redis-server
-    restart: always
-    command: >
-      redis-server
-      --requirepass Demo@123
-      --bind 0.0.0.0
-      --appendonly yes
+    container_name: redis-secure
     ports:
       - "6379:6379"
+    command: ["redis-server", "--requirepass", "Demo@123"]
 
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: simple-app
-    depends_on:
-      - redis
+  spring-app:
+    build: .
+    container_name: sample-app
     ports:
       - "4001:4001"
     environment:
-      SPRING_REDIS_HOST: redis
-      SPRING_REDIS_PORT: 6379
-      SPRING_REDIS_PASSWORD: Demo@123
-      SERVER_PORT: 4001
-    restart: always
+      - SPRING_REDIS_HOST=redis-secure
+      - SPRING_REDIS_PORT=6379
+      - SPRING_REDIS_PASSWORD=Demo@123
+    depends_on:
+      - redis
