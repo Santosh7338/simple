@@ -1,17 +1,30 @@
 version: "3.8"
 
 services:
-  sample-app:
-    image: sample-app:latest    # The image you will build
-    container_name: sample-app-container
+  redis:
+    image: redis:latest
+    container_name: redis-server
+    restart: always
+    command: >
+      redis-server
+      --requirepass Demo@123
+      --bind 0.0.0.0
+      --appendonly yes
+    ports:
+      - "6379:6379"
+
+  app:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: simple-app
+    depends_on:
+      - redis
     ports:
       - "4001:4001"
     environment:
-      SPRING_REDIS_HOST: "140.245.21.3"
-      SPRING_REDIS_PORT: "6379"
-      SPRING_REDIS_PASSWORD: "Demo@123"
-      SERVER_PORT: "4001"
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+      SPRING_REDIS_PASSWORD: Demo@123
+      SERVER_PORT: 4001
     restart: always
