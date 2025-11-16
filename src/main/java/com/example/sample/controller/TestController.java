@@ -37,6 +37,8 @@ public class TestController {
     @Cacheable(value = "employee", key = "#id")
     @GetMapping("/{id}")
     public ResponseEntity<?> getEmployeeById(@PathVariable Long id) {
+    	
+    	System.out.println("inside the id not found");
 
         return repo.findById(id)
                 .<ResponseEntity<?>>map(ResponseEntity::ok)

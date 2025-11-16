@@ -12,11 +12,11 @@ public class RedisDebugController {
     @Value("${spring.redis.port}")
     private int port;
 
-    @Value("${spring.redis.password}")
-    private String pass;
+//    @Value("${spring.redis.password}")
+//    private String pass;
 
     @GetMapping("/redis-info")
     public String info(){
-        return "Redis Host: " + host + " | Port: " + port + " | Password: " + pass;
+        return "Redis Host: " + host + " | Port: " + port;
     }
 }
