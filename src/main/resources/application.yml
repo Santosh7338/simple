@@ -1,0 +1,11 @@
+server:
+  port: 4001
+
+spring:
+  cache:
+    type: redis
+  redis:
+    host: redis
+    port: 6379
+    password: Demo@123
+    timeout: 60000
