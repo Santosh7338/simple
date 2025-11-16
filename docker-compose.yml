@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
 
   redis:
@@ -6,7 +7,9 @@ services:
     container_name: redis-secure
     ports:
       - "6379:6379"
-    command: ["redis-server", "--requirepass", "Demo@123"]
+    command: ["redis-server"]   # ❗ No requirepass
+    networks:
+      - app-net
 
   spring-app:
     build: .
@@ -14,8 +17,13 @@ services:
     ports:
       - "4001:4001"
     environment:
-      - SPRING_REDIS_HOST=redis-secure
-      - SPRING_REDIS_PORT=6379
-      - SPRING_REDIS_PASSWORD=Demo@123
+      SPRING_REDIS_HOST: redis-secure
+      SPRING_REDIS_PORT: 6379
     depends_on:
       - redis
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge
